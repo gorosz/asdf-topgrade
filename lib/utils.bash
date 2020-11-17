@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for topgrade.
-GH_REPO="https://github.com/gorosz/asdf-topgrade"
+GH_REPO="https://github.com/r-darwish/topgrade"
 
 fail() {
   echo -e "asdf-topgrade: $*"
