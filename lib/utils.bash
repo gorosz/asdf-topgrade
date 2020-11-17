@@ -40,7 +40,16 @@ download_release() {
   filename="$2"
 
   # TODO: Adapt the release URL convention for topgrade
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # https://github.com/r-darwish/topgrade/releases/download/v5.9.1/topgrade-v5.9.1-x86_64-unknown-linux-gnu.tar.gz
+    url="$GH_REPO/archive/topgrade-v${version}-x86_64-unknown-linux-gnu.tar.gz"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # https://github.com/r-darwish/topgrade/releases/download/v5.9.1/topgrade-v5.9.1-x86_64-apple-darwin.tar.gz
+    url="$GH_REPO/archive/topgrade-v${version}-x86_64-apple-darwin.tar.gz"
+  else
+    echo "Unsupported OS"
+    exit 1
+  fi
 
   echo "* Downloading topgrade release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
