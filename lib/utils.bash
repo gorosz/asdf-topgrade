@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for topgrade.
 GH_REPO="https://github.com/r-darwish/topgrade"
 
 fail() {
@@ -29,8 +28,6 @@ list_github_tags() {
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if topgrade has other means of determining installable versions.
   list_github_tags
 }
 
@@ -39,16 +36,12 @@ download_release() {
   version="$1"
   filename="$2"
 
-  # TODO: Adapt the release URL convention for topgrade
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # https://github.com/r-darwish/topgrade/releases/download/v5.9.1/topgrade-v5.9.1-x86_64-unknown-linux-gnu.tar.gz
     url="$GH_REPO/releases/download/v${version}/topgrade-v${version}-x86_64-unknown-linux-gnu.tar.gz"
   elif [[ "$OSTYPE" == "darwin"* ]]; then
-    # https://github.com/r-darwish/topgrade/releases/download/v5.9.1/topgrade-v5.9.1-x86_64-apple-darwin.tar.gz
     url="$GH_REPO/releases/download/v${version}/topgrade-v${version}-x86_64-apple-darwin.tar.gz"
   else
-    echo "Unsupported OS"
-    exit 1
+    fail "Unsupported OS"
   fi
 
   echo "* Downloading topgrade release $version..."
@@ -64,17 +57,18 @@ install_version() {
     fail "asdf-topgrade supports release installs only"
   fi
 
-  # TODO: Adapt this to proper extension and adapt extracting strategy.
   local release_file="$install_path/topgrade-$version.tar.gz"
+  local bin_path="$install_path/bin"
   (
     mkdir -p "$install_path"
     download_release "$version" "$release_file"
-    tar -xzf "$release_file" -C "$install_path" --strip-components=1 || fail "Could not extract $release_file"
+    tar -xzvf "$release_file" -C "$install_path" || fail "Could not extract $release_file"
+    mkdir -p "$bin_path"
+    mv "$install_path/topgrade" "$bin_path"
     rm "$release_file"
 
-    # TODO: Asert topgrade executable exists.
     local tool_cmd
-    tool_cmd="$(echo "topgrade -h" | cut -d' ' -f2-)"
+    tool_cmd="topgrade"
     test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
 
     echo "topgrade $version installation was successful!"
