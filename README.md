@@ -2,7 +2,7 @@
 
 # asdf-topgrade ![Build](https://github.com/gorosz/asdf-topgrade/workflows/Build/badge.svg) ![Lint](https://github.com/gorosz/asdf-topgrade/workflows/Lint/badge.svg)
 
-[topgrade](https://github.com/gorosz/topgrade) plugin for the [asdf version manager](https://asdf-vm.com).
+[topgrade](https://github.com/r-darwish/topgrade/) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
@@ -17,7 +17,6 @@
 # Dependencies
 
 - `bash`, `curl`, `tar`: generic POSIX utilities.
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
 
 # Install
 
